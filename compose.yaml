@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: roommatehub-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: roommatehub
+      POSTGRES_USER: roommatehub
+      POSTGRES_PASSWORD: roommatehub_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - roommatehub_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U roommatehub -d roommatehub"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  roommatehub_postgres_data:
